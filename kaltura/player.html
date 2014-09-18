@@ -1,0 +1,34 @@
+<html>
+	<head>
+		<script src="//code.jquery.com/jquery-git.js"></script>
+		<script src="//cdnapisec.kaltura.com/html5/html5lib/v2.16/mwEmbedLoader.php/p/1715251/uiconf_id/24198711"></script>
+	</head>
+	<body>
+		<div id="kalturaPlayer" style="width: 560px; height: 395px;"></div>
+		<script type="text/javascript">
+			kWidget.embed({
+				"targetId": "kalturaPlayer",
+				"wid": "_1715251",
+				"uiconf_id": 24198711,
+				"flashvars": {
+					"streamerType": "auto",
+					"kapxHold": {
+	                    "plugin": true,
+	                    "iframeHTML5Js": "/kaltura/kapxHold.js",
+	                    "slateUrl": ""
+                    }
+				},
+				"cache_st": 1411065287,
+				"entry_id": "1_hpto4ylw",
+				'readyCallback': function( playerId ){
+					console.log( "kWidget player ready: " + playerId );
+					window.kdp = $( '#' + playerId ).get(0);
+					// kdp.kBind( 'doPlay', function(){
+					// 	console.log(  "doPlay called on  " + playerId );
+					// });
+					console.log('Ready!');
+				}
+			});
+		</script>
+	</body>
+</html>
