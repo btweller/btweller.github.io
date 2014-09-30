@@ -1,18 +1,53 @@
 <html>
 	<head>
 		<title>Cine.io Player</title>
-		<script src='//cdn.cine.io/cineio.js'>
+		<script src='//cdn.cine.io/cineio.js'></script>
+		<style>
+			#player-wrapper {
+				width: 640px;
+				height: 360px;
+			}
+		</style>
 	</head>
 	<body>
-		<div id="player-example">
+		<div id="player-wrapper">
+			<div id="player-example">
+			</div>
+		</div>
+		<div id="timecode-wrapper">
+			Timecode: <div id="timecode"></div>
+			Timestamp: <div id="timestamp"></div>
 		</div>
 		<script type="text/javascript">
 	  		CineIO.init('19b899e9401d8c2198de7f56f6d066b5');
 			var streamId = '5418ab2b5217670800fb65c3'
 			  , domId = 'player-example';
 
+
+			var without = function(arr, otherArray){
+			  return arr.filter(function(item){
+			    return otherArray.indexOf(item) == -1
+			  })
+			};
+			var knownKeys = ["bandwidth" , "bufferfill", "duration", "height", "qualitylevel", "screenwidth", "transitioning", "width"];
+
+
 			CineIO.play(streamId, domId, function(error, player) {
 				console.log("player ready", error, player);
+
+ 
+				player.onMeta(function(data){
+				  // console.log(without(Object.keys(data.metadata), knownKeys))
+				  // if (without(Object.keys(data.metadata), knownKeys).length > 0){
+				  //   console.log(data)
+				  // }
+				  if (data.metadata.type == 'textdata') {
+				  	document.getElementById('timecode').innerHTML = (data.metadata.timecode / 1000).toFixed(2);
+				  	document.getElementById('timestamp').innerHTML = new Date(data.metadata.timestamp).toString();
+
+				    console.log("TEXT", data.metadata)
+				  }
+				});
 			});
 		</script>
 	</body>

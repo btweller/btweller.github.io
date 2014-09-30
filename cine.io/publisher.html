@@ -1,11 +1,20 @@
 <html>
 	<head>
 		<title>Cine.io Publisher</title>
-		<script src='//cdn.cine.io/cineio.js'>
+		<script src='//cdn.cine.io/cineio.js'></script>
+		<style>
+		#publisher-example {
+		    width: 640px;
+		    height: 360px;
+		}
+		</style>
 	</head>
 	<body>
 		<div id="publisher-example">
 		</div>
+		<div id="controls">
+			<input id="btnStart" type="button" value="Start" onclick="startPublishing();" />
+			<input id="btnStop" type="button" value="Stop" onclick="stopPublishing();" />
 		<script type="text/javascript">
 	  		CineIO.init('19b899e9401d8c2198de7f56f6d066b5');
 			var streamId = '5418ab2b5217670800fb65c3'
@@ -16,7 +25,12 @@
 			  streamId, password, domId
 			);
 
-			publisher.start();
+			function startPublishing() {
+				publisher.start();
+			}
+			function stopPublishing() {
+				publisher.stop();
+			}
 		</script>
 	</body>
 </html>
