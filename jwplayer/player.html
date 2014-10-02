@@ -5,13 +5,67 @@
 	</head>
 	<body>
 		<div id="jwPlayer" style="width: 560px; height: 395px;"></div>
+		<div>onTime:<span id="timecode"></span></div>
+		<div>KAPx Timecode:<span id="kapx-timecode"></span></div>
+		<textarea id="cuepoint-history"></textarea>
+
 		<script type="text/javascript">
 //https://www.kaltura.com/p/1715251/sp/171525100/playManifest/entryId/0_skdgd8v8/flavorId/0_kdh6isjh/format/url/protocol/https/a.mp4
-		    window.jwp = jwplayer("jwPlayer").setup({
-		        file: "http://hls.cine.io/cines/g1u7Ad_jEx/g1u7Ad_jEx.m3u8",
-		        width: 640,
-		        height: 360
-		    });
+			var without = function(arr, otherArray){
+			  return arr.filter(function(item){
+			    return otherArray.indexOf(item) == -1
+			  })
+			};
+			var knownKeys = ["bandwidth" , "bufferfill", "duration", "height", "qualitylevel", "screenwidth", "transitioning", "width"];
+
+			var jwp = jwplayer("jwPlayer").setup({
+				sources: [
+					{ 
+						file: "rtmp://fml.cine.io/20C45E/cines/g1u7Ad_jEx?adbe-live-event=g1u7Ad_jEx"
+					}
+					,
+					{
+						file: "http://hls.cine.io/cines/g1u7Ad_jEx/g1u7Ad_jEx.m3u8"
+					}
+				],
+				rtmp: {
+					subscribe: true
+					,bufferlength: 1
+				},
+				primary: 'flash',
+				width: 640,
+				height: 360,
+				autostart: true
+			});
+
+			window.jwp = jwp;
+
+			jwp.onReady(function() {
+			    console.log('jwplayer.onReady');
+			});
+
+			jwp.onTime(function(e) {
+			    $('#timecode').html(e.position);
+			});
+
+			jwp.onMeta(function(event) {
+				if ('type' in event.metadata) {
+					if (event.metadata.type == 'textdata') {
+						document.getElementById('kapx-timecode').innerHTML = (event.metadata.timecode / 1000).toFixed(2);
+						// document.getElementById('timestamp').innerHTML = new Date(data.metadata.timestamp).toString();
+
+						console.log("TEXT", event.metadata)
+					}
+				}
+				else {
+					console.log(event);
+				}
+			});
+
+			jwp.onError(function(e) {
+			    console.log(e);
+			});
+
 		</script>
 	</body>
 </html>
