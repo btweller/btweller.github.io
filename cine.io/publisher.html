@@ -21,9 +21,17 @@
 			  , password = 'fans7'
 			  , domId = 'publisher-example';
 
-			var publisher = CineIO.publish(
-			  streamId, password, domId
-			);
+		  	var publishOptions = {
+				audioCodec: 'NellyMoser',
+				streamWidth: 640,
+				streamHeight: 360,
+				streamFPS: 30,
+				intervalSecs: 2,
+				bandwidth: 700,  // Kbps?
+				videoQuality: 90
+		  	};
+
+			var publisher = CineIO.publish(streamId, password, domId, publishOptions);
 
 			function startPublishing() {
 				publisher.start();
